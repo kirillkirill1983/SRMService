@@ -63,7 +63,7 @@ namespace ServiceStationApi
             });
             try
             {
-                migrationRunner.MigrateUp();
+                migrationRunner.MigrateUp(20201026115114);
             }
             catch (Exception ex) 
             {
