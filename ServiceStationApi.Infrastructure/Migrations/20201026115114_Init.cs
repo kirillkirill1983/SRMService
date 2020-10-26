@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceStationApi.Infrastructure.Migrations
 {
-    [Migration("20201026090754")]
     public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
