@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ServiceStationApi.Infrastructure.Migrations;
+using ServiceStationApi.Infrastructure.Configurations;
 using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi
@@ -34,11 +38,22 @@ namespace ServiceStationApi
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
 
+            services.AddFluentMigratorCore()
+                .ConfigureRunner(config =>
+                    config.AddSqlServer()
+                    .WithGlobalConnectionString(connection)
+                    //.ScanIn(Assembly.GetExecutingAssembly()).For.All())
+                    .ScanIn(typeof(ApplicationContext).Assembly).For.Migrations())
+
+                    .AddLogging(config => config.AddFluentMigratorConsole());
+                    
+
+
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
             if (env.IsDevelopment())
             {
@@ -55,6 +70,21 @@ namespace ServiceStationApi
             {
                 endpoints.MapControllers();
             });
+
+
+
+            try
+            {
+                migrationRunner.MigrateUp();
+            }
+            catch (Exception ex)
+            { 
+                
+            }
+            
+            
+
         }
+
     }
 }

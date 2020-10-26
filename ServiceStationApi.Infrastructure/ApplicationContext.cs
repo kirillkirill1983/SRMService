@@ -37,9 +37,6 @@ namespace ServiceStationApi.Infrastructure
         }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Bd_tempdb;Trusted_Connection=True;");
-        }
+        
     }
 }
