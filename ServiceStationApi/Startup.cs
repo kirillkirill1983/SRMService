@@ -44,7 +44,7 @@ namespace ServiceStationApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext applicationContext)
         {
             if (env.IsDevelopment())
             {
@@ -63,7 +63,7 @@ namespace ServiceStationApi
             });
             try
             {
-                migrationRunner.MigrateUp(20201026115114);
+                applicationContext.Database.Migrate();
             }
             catch (Exception ex) 
             {
