@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi
@@ -63,11 +64,12 @@ namespace ServiceStationApi
             });
             try
             {
+                Log.Information("Getting the create BD...");
                 applicationContext.Database.Migrate();
             }
             catch (Exception ex) 
             {
-                
+                Log.Fatal(ex, "Unable to create database");
             }
             
             
