@@ -24,9 +24,9 @@ namespace ServiceStationApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // получаем строку подключения из файла конфигурации
+            // get the connection string from the config file
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст MobileContext в качестве сервиса в приложение
+            //  add the MobileContext context as a service to the application
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
 
@@ -38,10 +38,10 @@ namespace ServiceStationApi
                     .ScanIn(typeof(ApplicationContext).Assembly).For.Migrations())
 
                     .AddLogging(config => config.AddFluentMigratorConsole());
-                    
 
 
-            services.AddControllersWithViews();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,9 +70,14 @@ namespace ServiceStationApi
             catch (Exception ex) 
             {
                 Log.Fatal(ex, "Unable to create database");
+                
             }
-            
-            
+            finally
+            {
+                Log.CloseAndFlush();
+               
+            }
+
 
         }
 
