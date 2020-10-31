@@ -21,15 +21,6 @@ namespace ServiceStationApi.Infrastructure.Configurations
                    .HasMaxLength(50)
                    .HasColumnName("Phone");
 
-            //builder.HasData
-            //    (new Customer
-            //        {
-                        
-            //            Name = "Tomas Indigo",
-            //            Phone = "77777"
-
-            //        }
-            //    );
         }
     }
 }
