@@ -14,17 +14,75 @@ namespace ServiceStationApi.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        ApplicationContext dCar;
+        ApplicationContext db;
         public CarController(ApplicationContext contextCar)
         {
-            dCar = contextCar;
+            db = contextCar;
 
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Car>>> Get()
         {
-            return await dCar.Cars.ToListAsync();
+            return await db.Cars.ToListAsync();
+        }
+
+        // GET api/users/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Car>> Get(int id)
+        {
+            Car car = await db.Cars.FirstOrDefaultAsync(x => x.Id == id);
+            if (car == null)
+                return NotFound();
+            return new ObjectResult(car);
+        }
+
+        // POST api/users
+        [HttpPost]
+        public async Task<ActionResult<Car>> Post(Car car)
+        {
+            if (car == null)
+            {
+                return BadRequest();
+            }
+
+            db.Cars.Add(car);
+            await db.SaveChangesAsync();
+            return Ok(car);
+        }
+
+        // PUT api/users/
+        [HttpPut]
+        public async Task<ActionResult<Car>> Put(Car car)
+        {
+            if (car == null)
+            {
+                return BadRequest();
+            }
+            if (!db.Cars.Any(x => x.Id == car.Id))
+            {
+                return NotFound();
+            }
+
+            db.Update(car);
+            await db.SaveChangesAsync();
+            return Ok(car);
+        }
+
+
+        // DELETE api/users/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Car>> Delete(int id)
+        {
+            Car car = db.Cars.FirstOrDefault(x => x.Id == id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            db.Cars.Remove(car);
+            await db.SaveChangesAsync();
+            return Ok(car);
+
         }
     }
 }
