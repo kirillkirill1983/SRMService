@@ -8,7 +8,7 @@ namespace ServiceStationApi.Infrastructure
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Work> Works { get; set; }
+        public DbSet<Work> Worker { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Worker> Workers { get; set; }
