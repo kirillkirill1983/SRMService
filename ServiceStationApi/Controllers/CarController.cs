@@ -18,12 +18,7 @@ namespace ServiceStationApi.Controllers
         public CarController(ApplicationContext contextCar)
         {
             dCar = contextCar;
-            if (!dCar.Cars.Any())
-            {
-                dCar.Cars.Add(new Car {Car_model="ZAZ", Nubber="7777", Date=DateTime.Now });
 
-                dCar.SaveChanges();
-            }
         }
 
         [HttpGet]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServiceStationApi.Domain;
+using System;
 
 namespace ServiceStationApi.Infrastructure.Configurations
 
@@ -30,6 +31,16 @@ namespace ServiceStationApi.Infrastructure.Configurations
                 .WithMany(a => a.Cars)
                 .HasForeignKey(m => m.CustomerId);
 
+            //builder.HasData
+            //    (new Car
+            //    {
+            //        Id = 1,
+            //        Car_model = "ZAZ",
+            //        Nubber = "111111",
+            //        Date = DateTime.Today,
+
+            //    }
+            //    ); 
 
         }
     }

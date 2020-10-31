@@ -18,12 +18,7 @@ namespace ServiceStationApi.Controllers
         public CustomerController(ApplicationContext context)
         {
             db = context;
-            if (!db.Customers.Any())
-            {
-                db.Customers.Add(new Customer { Name = "Tom", Phone = "05050505" });
-
-                db.SaveChanges();
-            }
+            
         }
 
         [HttpGet]

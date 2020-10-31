@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServiceStationApi.Domain;
+using System;
 
 namespace ServiceStationApi.Infrastructure.Configurations
 {
@@ -10,7 +11,7 @@ namespace ServiceStationApi.Infrastructure.Configurations
         {
             builder.ToTable("Customer");
 
-            builder.HasKey(o => o.Id);
+            builder.HasKey(o => o.Id );
 
             builder.Property(t => t.Name)
                    .HasMaxLength(50)
@@ -19,6 +20,16 @@ namespace ServiceStationApi.Infrastructure.Configurations
             builder.Property(t => t.Phone)
                    .HasMaxLength(50)
                    .HasColumnName("Phone");
+
+            builder.HasData
+                (new Customer
+                    {
+                        
+                        Name = "Tomas Indigo",
+                        Phone = "77777"
+
+                    }
+                );
         }
     }
 }
