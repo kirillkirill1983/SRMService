@@ -10,8 +10,8 @@ using ServiceStationApi.Infrastructure;
 namespace ServiceStationApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20201031132222_Init")]
-    partial class Init
+    [Migration("20201031153058_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
