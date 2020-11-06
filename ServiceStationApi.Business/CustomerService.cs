@@ -11,29 +11,19 @@ namespace ServiceStationApi.Business
     public class CustomerService : ICustomerBusiness
     {
         private readonly ICustomerRepository _customerRepository;
+
         public CustomerService(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
         }
 
-        public Task<bool> AddAsync(Customer customer)
-        {//////Что делать тут  ????
-            try
-            {
-                var obj = new Customer();
-                obj.Name=Customer.
-                return ;
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        public Task<bool> Update(Customer customer)
+        public async Task<bool> AddAsync(Customer customer)
         {
-            throw new NotImplementedException();
+            var tabl = new Customer();
+            tabl.Name = customer.Name;
+            tabl.Phone = customer.Phone;
+            var result = await _customerRepository.Add(tabl);
+            return result ;
         }
     }
 }
