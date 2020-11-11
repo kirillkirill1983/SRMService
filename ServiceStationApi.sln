@@ -4,12 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStationApi", "ServiceStationApi\ServiceStationApi.csproj", "{6CF67DE5-342D-4EB9-9007-2D33AF9A5EB1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{240782DD-FF6B-4AC3-8B2D-9717F5B7D373} = {240782DD-FF6B-4AC3-8B2D-9717F5B7D373}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStationApi.Domain", "ServiceStationApi.Domain\ServiceStationApi.Domain.csproj", "{2CE61462-4F80-43C4-89BD-0ADFDA98CF0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStationApi.Infrastructure", "ServiceStationApi.Infrastructure\ServiceStationApi.Infrastructure.csproj", "{76185485-10EA-4DEB-982C-B5069B777661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStationApi.Business", "ServiceStationApi.Business\ServiceStationApi.Business.csproj", "{240782DD-FF6B-4AC3-8B2D-9717F5B7D373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStationApi.Business", "ServiceStationApi.Business\ServiceStationApi.Business.csproj", "{240782DD-FF6B-4AC3-8B2D-9717F5B7D373}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

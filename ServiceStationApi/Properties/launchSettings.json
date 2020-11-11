@@ -20,7 +20,7 @@
     "ServiceStationApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api",
+      //"launchUrl": "api",
       "applicationUrl": "https://localhost:5001;https://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -7,7 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using ServiceStationApi.Business;
 using ServiceStationApi.Infrastructure;
+using ServiceStationApi.Infrastructure.Repository;
 
 namespace ServiceStationApi
 {
@@ -42,6 +44,9 @@ namespace ServiceStationApi
 
 
             services.AddControllers();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ICustomerService, CustomerService>(); 
+            services.AddDbContext<ApplicationContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,16 +57,8 @@ namespace ServiceStationApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            
             try
             {
                 Log.Information("Getting the create BD...");
@@ -77,6 +74,24 @@ namespace ServiceStationApi
                 Log.CloseAndFlush();
                
             }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            //app.UseMvc(routes=>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //});
 
 
         }
