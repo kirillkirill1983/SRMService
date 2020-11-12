@@ -86,7 +86,7 @@ namespace ServiceStationApi
                 endpoints.MapControllers();
             });
 
-            //app.UseMvc(routes=>
+            //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(
             //        name: "default",
