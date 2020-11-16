@@ -10,7 +10,7 @@ namespace ServiceStationApi.Infrastructure.Repository
         Task<bool> Add(Customer customer);
         Task<bool> Update(Customer customer);
         Task<List<Customer>> GetAll();
-        Task<bool> Delete (long Id);
+        Task<Customer> Delete (long Id);
         Task<Customer> GetById(long Id);
     }
 }

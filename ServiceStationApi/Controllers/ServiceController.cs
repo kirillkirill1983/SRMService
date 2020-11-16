@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ServiceStationApi.Business.Services;
 using ServiceStationApi.Domain;
-using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi.Controllers
 {
@@ -14,24 +10,23 @@ namespace ServiceStationApi.Controllers
     [ApiController]
     public class ServiceController : ControllerBase
     {
-        ApplicationContext db;
-        public ServiceController(ApplicationContext context)
+        private readonly IServiseService _serviseService;
+        public ServiceController(IServiseService serviseService)
         {
-            db = context;
-
+            _serviseService = serviseService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Service>>> Get()
         {
-
-            return await db.Services.ToListAsync();
+            return await _serviseService.GetAllAsynk();
         }
+
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Service>> Get(int id)
+        public async Task<ActionResult<Service>> Get(long id)
         {
-            Service service = await db.Services.FirstOrDefaultAsync(x => x.Id == id);
+            Service service = await _serviseService.GetByIdAsync(id);
             if (service == null)
                 return NotFound();
             return new ObjectResult(service);
@@ -46,8 +41,7 @@ namespace ServiceStationApi.Controllers
                 return BadRequest();
             }
 
-            db.Services.Add(service);
-            await db.SaveChangesAsync();
+            await _serviseService.AddAsync(service);
             return Ok(service);
         }
 
@@ -59,30 +53,19 @@ namespace ServiceStationApi.Controllers
             {
                 return BadRequest();
             }
-            if (!db.Services.Any(x => x.Id == service.Id))
-            {
-                return NotFound();
-            }
 
-            db.Update(service);
-            await db.SaveChangesAsync();
+            await _serviseService.UpDateAsync(service);
+
             return Ok(service);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Service>> Delete(int id)
+        public async Task<ActionResult<Service>> Delete(long id)
         {
-            Service service = db.Services.FirstOrDefault(x => x.Id == id);
-            if (service == null)
-            {
-                return NotFound();
-            }
-            db.Services.Remove(service);
-            await db.SaveChangesAsync();
+            var service = await _serviseService.DeleteAsync(id);
             return Ok(service);
-
         }
     }
 }

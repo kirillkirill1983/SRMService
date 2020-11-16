@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ServiceStationApi.Business.Works;
 using ServiceStationApi.Domain;
-using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi.Controllers
 {
@@ -14,24 +10,23 @@ namespace ServiceStationApi.Controllers
     [ApiController]
     public class WorkController : ControllerBase
     {
-        ApplicationContext db;
-        public WorkController(ApplicationContext context)
+        private readonly IWorkService _workService;
+        public WorkController(IWorkService workService)
         {
-            db = context;
-
+            _workService = workService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Work>>> Get()
         {
-
-            return await db.Worker.ToListAsync();
+            return await _workService.GetAllAsynk();
         }
+
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Work>> Get(int id)
+        public async Task<ActionResult<Work>> Get(long id)
         {
-            Work work = await db.Worker.FirstOrDefaultAsync(x => x.Id == id);
+            Work work = await _workService.GetByIdAsync(id);
             if (work == null)
                 return NotFound();
             return new ObjectResult(work);
@@ -46,8 +41,7 @@ namespace ServiceStationApi.Controllers
                 return BadRequest();
             }
 
-            db.Worker.Add(work);
-            await db.SaveChangesAsync();
+            await _workService.AddAsync(work);
             return Ok(work);
         }
 
@@ -59,31 +53,19 @@ namespace ServiceStationApi.Controllers
             {
                 return BadRequest();
             }
-            if (!db.Worker.Any(x => x.Id == work.Id))
-            {
-                return NotFound();
-            }
 
-            db.Update(work);
-            await db.SaveChangesAsync();
+            await _workService.UpDateAsync(work);
+
             return Ok(work);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Work>> Delete(int id)
+        public async Task<ActionResult<Work>> Delete(long id)
         {
-            Work work = db.Worker.FirstOrDefault(x => x.Id == id);
-            if (work == null)
-            {
-                return NotFound();
-            }
-            db.Worker.Remove(work);
-            await db.SaveChangesAsync();
+            var work = await _workService.DeleteAsync(id);
             return Ok(work);
-
         }
-
     }
 }

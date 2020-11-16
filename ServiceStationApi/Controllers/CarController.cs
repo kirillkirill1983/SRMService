@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ServiceStationApi.Business.Cars;
 using ServiceStationApi.Domain;
-using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi.Controllers
 {
@@ -14,24 +10,23 @@ namespace ServiceStationApi.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        ApplicationContext db;
-        public CarController(ApplicationContext contextCar)
+        private readonly ICarService _carService;
+        public CarController(ICarService carService)
         {
-            db = contextCar;
-
+            _carService = carService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Car>>> Get()
         {
-            return await db.Cars.ToListAsync();
+            return await _carService.GetAllAsynk();
         }
 
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> Get(int id)
+        public async Task<ActionResult<Car>> Get(long id)
         {
-            Car car = await db.Cars.FirstOrDefaultAsync(x => x.Id == id);
+            Car car = await _carService.GetByIdAsync(id);
             if (car == null)
                 return NotFound();
             return new ObjectResult(car);
@@ -46,8 +41,7 @@ namespace ServiceStationApi.Controllers
                 return BadRequest();
             }
 
-            db.Cars.Add(car);
-            await db.SaveChangesAsync();
+            await _carService.AddAsync(car);
             return Ok(car);
         }
 
@@ -59,31 +53,21 @@ namespace ServiceStationApi.Controllers
             {
                 return BadRequest();
             }
-            if (!db.Cars.Any(x => x.Id == car.Id))
-            {
-                return NotFound();
-            }
 
-            db.Update(car);
-            await db.SaveChangesAsync();
+            await _carService.UpDateAsync(car);
+
             return Ok(car);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Car>> Delete(int id)
+        public async Task<ActionResult<Car>> Delete(long id)
         {
-            Car car = db.Cars.FirstOrDefault(x => x.Id == id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-            db.Cars.Remove(car);
-            await db.SaveChangesAsync();
+            var car = await _carService.DeleteAsync(id);
             return Ok(car);
-
         }
+
     }
 }
 

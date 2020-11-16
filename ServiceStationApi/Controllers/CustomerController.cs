@@ -71,7 +71,7 @@ namespace ServiceStationApi.Controllers
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult<Customer>> Delete(long id)
         {
             var customer = await _customerService.DeleteAsync(id);
             return Ok(customer);

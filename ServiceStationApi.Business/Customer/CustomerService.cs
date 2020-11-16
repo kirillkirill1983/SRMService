@@ -27,7 +27,7 @@ namespace ServiceStationApi.Business
             return result ;
         }
 
-        public async Task<bool> DeleteAsync(long Id)
+        public async Task<Customer> DeleteAsync(long Id)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ServiceStationApi.Business
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 

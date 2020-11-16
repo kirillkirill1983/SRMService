@@ -12,6 +12,6 @@ namespace ServiceStationApi.Business
         Task<List<Customer>> GetAllAsynk();
         Task<bool> UpDateAsync(Customer customer);
         Task<Customer> GetByIdAsync(long Id);
-        Task<bool> DeleteAsync(long Id);
+        Task<Customer> DeleteAsync(long Id);
     }
 }

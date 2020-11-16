@@ -8,8 +8,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using ServiceStationApi.Business;
+using ServiceStationApi.Business.Cars;
+using ServiceStationApi.Business.Details;
+using ServiceStationApi.Business.Services;
+using ServiceStationApi.Business.Workers;
+using ServiceStationApi.Business.Works;
 using ServiceStationApi.Infrastructure;
 using ServiceStationApi.Infrastructure.Repository;
+using ServiceStationApi.Infrastructure.Repository.Cars;
+using ServiceStationApi.Infrastructure.Repository.Details;
+using ServiceStationApi.Infrastructure.Repository.Services;
+using ServiceStationApi.Infrastructure.Repository.Workers;
+using ServiceStationApi.Infrastructure.Repository.Works;
 
 namespace ServiceStationApi
 {
@@ -45,7 +55,17 @@ namespace ServiceStationApi
 
             services.AddControllers();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<ICustomerService, CustomerService>(); 
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ICarRepository, CarRepository>();
+            services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IDetailRepository, DetailRepository>();
+            services.AddTransient<IDetailService, DetailService>();
+            services.AddTransient<IServiceRepository, ServiceRepository>();
+            services.AddTransient<IServiseService, ServiceService>();
+            services.AddTransient<IWorkRepository, WorkRepository>();
+            services.AddTransient<IWorkService, WorkService>();
+            services.AddTransient<IWorkerRepository, WorkerRepository>();
+            services.AddTransient<IWorkerService, WorkerService>();
             services.AddDbContext<ApplicationContext>();
         }
 
@@ -86,14 +106,7 @@ namespace ServiceStationApi
                 endpoints.MapControllers();
             });
 
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
-
-
+            
         }
 
     }

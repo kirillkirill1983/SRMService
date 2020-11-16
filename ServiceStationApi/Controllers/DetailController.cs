@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ServiceStationApi.Business.Details;
 using ServiceStationApi.Domain;
-using ServiceStationApi.Infrastructure;
 
 namespace ServiceStationApi.Controllers
 {
@@ -14,24 +10,23 @@ namespace ServiceStationApi.Controllers
     [ApiController]
     public class DetailController : ControllerBase
     {
-        ApplicationContext db;
-        public DetailController(ApplicationContext context)
+        private readonly IDetailService _detailService;
+        public DetailController(IDetailService detailService)
         {
-            db = context;
-           
+            _detailService = detailService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Detail>>> Get()
-        { 
-        
-            return await db.Details.ToListAsync();
-        }
-         // GET api/users/id
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Detail>> Get(int id)
         {
-            Detail detail = await db.Details.FirstOrDefaultAsync(x => x.Id == id);
+            return await _detailService.GetAllAsynk();
+        }
+
+        // GET api/users/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Detail>> Get(long id)
+        {
+            Detail detail = await _detailService.GetByIdAsync(id);
             if (detail == null)
                 return NotFound();
             return new ObjectResult(detail);
@@ -46,8 +41,7 @@ namespace ServiceStationApi.Controllers
                 return BadRequest();
             }
 
-            db.Details.Add(detail);
-            await db.SaveChangesAsync();
+            await _detailService.AddAsync(detail);
             return Ok(detail);
         }
 
@@ -59,30 +53,20 @@ namespace ServiceStationApi.Controllers
             {
                 return BadRequest();
             }
-            if (!db.Details.Any(x => x.Id == detail.Id))
-            {
-                return NotFound();
-            }
 
-            db.Update(detail);
-            await db.SaveChangesAsync();
+            await _detailService.UpDateAsync(detail);
+
             return Ok(detail);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Detail>> Delete(int id)
+        public async Task<ActionResult<Detail>> Delete(long id)
         {
-            Detail detail = db.Details.FirstOrDefault(x => x.Id == id);
-            if (detail == null)
-            {
-                return NotFound();
-            }
-            db.Details.Remove(detail);
-            await db.SaveChangesAsync();
+            var detail = await _detailService.DeleteAsync(id);
             return Ok(detail);
-
         }
+
     }
 }

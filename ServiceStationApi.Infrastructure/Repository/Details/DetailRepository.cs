@@ -1,28 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceStationApi.Domain;
-using ServiceStationApi.Infrastructure.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceStationApi.Infrastructure.Repository
+namespace ServiceStationApi.Infrastructure.Repository.Details
 {
-    public class CustomerRepository : ICustomerRepository
+
+    public class DetailRepository : IDetailRepository
     {
         private readonly ApplicationContext _context;
-        public CustomerRepository(ApplicationContext context)
+        public DetailRepository(ApplicationContext context)
         {
             _context = context;
         }
 
-        public async Task<bool> Add(Customer customer)
+        public async Task<bool> Add(Detail detail)
         {
             try
             {
-                await _context.Customers.AddAsync(customer);
+                await _context.Details.AddAsync(detail);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -33,14 +31,14 @@ namespace ServiceStationApi.Infrastructure.Repository
             };
         }
 
-        public async Task<Customer> Delete(long Id)
+        public async Task<Detail> Delete(long Id)
         {
             try
             {
-                var result = await _context.Customers.Where(e => e.Id == Id).FirstOrDefaultAsync();
+                var result = await _context.Details.Where(e => e.Id == Id).FirstOrDefaultAsync();
                 if (result != null)
                 {
-                    _context.Customers.Remove(result);
+                    _context.Details.Remove(result);
                     await _context.SaveChangesAsync();
                 }
                 return result;
@@ -52,24 +50,24 @@ namespace ServiceStationApi.Infrastructure.Repository
             }
         }
 
-        public async Task<List<Customer>> GetAll()
+        public async Task<List<Detail>> GetAll()
         {
-            var result = await _context.Customers.ToListAsync();
+            var result = await _context.Details.ToListAsync();
             return result;
         }
 
-        public async Task<Customer> GetById(long Id)
+        public async Task<Detail> GetById(long Id)
         {
 
-            var result = await _context.Customers.Where(e => e.Id == Id).FirstOrDefaultAsync();
+            var result = await _context.Details.Where(e => e.Id == Id).FirstOrDefaultAsync();
             return result;
         }
 
-        public async Task<bool> Update(Customer customer)
+        public async Task<bool> Update(Detail detail)
         {
             try
             {
-                _context.Customers.Update(customer);
+                _context.Details.Update(detail);
                 await _context.SaveChangesAsync();
                 return true;
             }
