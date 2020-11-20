@@ -29,7 +29,7 @@ namespace ServiceStationApi.Controllers
             Car car = await _carService.GetByIdAsync(id);
             if (car == null)
                 return NotFound();
-            return new ObjectResult(car);
+            return Ok(car);
         }
 
         // POST api/users

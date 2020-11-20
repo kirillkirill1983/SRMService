@@ -14,11 +14,11 @@ namespace ServiceStationApi.Infrastructure.Configurations
 
             builder.HasKey(o => o.Id);
 
-            builder.Property(t => t.Car_model)
+            builder.Property(t => t.CarModel)
                    .HasMaxLength(50)
                    .HasColumnName("Car_model");
 
-            builder.Property(m => m.Nubber)
+            builder.Property(m => m.Number)
                 .HasColumnName("Number")
                 .HasMaxLength(50);
 

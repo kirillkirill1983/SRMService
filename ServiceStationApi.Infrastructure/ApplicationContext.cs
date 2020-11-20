@@ -35,8 +35,6 @@ namespace ServiceStationApi.Infrastructure
             modelBuilder.
                 ApplyConfiguration(new ServiceConfiguration());
         }
-
-
-        
+  
     }
 }

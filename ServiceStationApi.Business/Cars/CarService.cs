@@ -20,8 +20,8 @@ namespace ServiceStationApi.Business.Cars
         {
             var tabl = new Car();
             tabl.CustomerId = car.CustomerId;
-            tabl.Car_model = car.Car_model;
-            tabl.Nubber = tabl.Nubber;
+            tabl.CarModel = car.CarModel;
+            tabl.Number = tabl.Number;
             tabl.Date = car.Date;
             var result = await _carRepository.Add(tabl);
             return result;
@@ -50,8 +50,8 @@ namespace ServiceStationApi.Business.Cars
                 {
                     Id = item.Id,
                     CustomerId = item.CustomerId,
-                     Car_model=item.Car_model,
-                      Nubber=item.Nubber,
+                     CarModel=item.CarModel,
+                      Number=item.Number,
                       Date=item.Date
                     
                 });
@@ -65,8 +65,8 @@ namespace ServiceStationApi.Business.Cars
             var result = await _carRepository.GetById(Id);
             var table = new Car();
             table.CustomerId = result.CustomerId;
-            table.Car_model = result.Car_model;
-            table.Nubber = result.Nubber;
+            table.CarModel = result.CarModel;
+            table.Number = result.Number;
             table.Date = result.Date;
 
             return table;
@@ -78,8 +78,8 @@ namespace ServiceStationApi.Business.Cars
             {
                 var tabl = new Car();
                 tabl.CustomerId = car.CustomerId;
-                tabl.Car_model = car.Car_model;
-                tabl.Nubber = car.Nubber;
+                tabl.CarModel = car.CarModel;
+                tabl.Number = car.Number;
                 tabl.Date = car.Date;
 
                 var result = await _carRepository.Update(tabl);
