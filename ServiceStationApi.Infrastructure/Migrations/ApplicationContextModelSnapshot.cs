@@ -26,7 +26,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Car_model")
+                    b.Property<string>("CarModel")
                         .HasColumnName("Car_model")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -38,7 +38,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
                         .HasColumnName("Date")
                         .HasColumnType("date");
 
-                    b.Property<string>("Nubber")
+                    b.Property<string>("Number")
                         .HasColumnName("Number")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -170,7 +170,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Worker");
+                    b.ToTable("Works");
                 });
 
             modelBuilder.Entity("ServiceStationApi.Domain.Car", b =>

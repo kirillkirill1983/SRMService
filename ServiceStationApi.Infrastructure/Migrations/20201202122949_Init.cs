@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceStationApi.Infrastructure.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Worker",
+                name: "Works",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -46,7 +46,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Worker", x => x.Id);
+                    table.PrimaryKey("PK_Works", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,9 +119,9 @@ namespace ServiceStationApi.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Services_Worker_WorkerId",
+                        name: "FK_Services_Works_WorkerId",
                         column: x => x.WorkerId,
-                        principalTable: "Worker",
+                        principalTable: "Works",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -162,7 +162,7 @@ namespace ServiceStationApi.Infrastructure.Migrations
                 name: "Work");
 
             migrationBuilder.DropTable(
-                name: "Worker");
+                name: "Works");
 
             migrationBuilder.DropTable(
                 name: "Customer");
