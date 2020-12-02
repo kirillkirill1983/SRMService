@@ -20,6 +20,7 @@ using ServiceStationApi.Infrastructure.Repository.Details;
 using ServiceStationApi.Infrastructure.Repository.Services;
 using ServiceStationApi.Infrastructure.Repository.Workers;
 using ServiceStationApi.Infrastructure.Repository.Works;
+using AutoMapper;
 
 namespace ServiceStationApi
 {
@@ -51,7 +52,7 @@ namespace ServiceStationApi
 
                     .AddLogging(config => config.AddFluentMigratorConsole());
 
-
+           services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
@@ -67,6 +68,8 @@ namespace ServiceStationApi
             services.AddTransient<IWorkerRepository, WorkerRepository>();
             services.AddTransient<IWorkerService, WorkerService>();
             services.AddDbContext<ApplicationContext>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

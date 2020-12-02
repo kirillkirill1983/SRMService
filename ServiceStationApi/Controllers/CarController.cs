@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServiceStationApi.Business.Cars;
 using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 
 namespace ServiceStationApi.Controllers
 {
@@ -11,63 +12,62 @@ namespace ServiceStationApi.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
+        
         public CarController(ICarService carService)
         {
             _carService = carService;
+            
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> Get()
+        public async Task<ActionResult<IEnumerable<CarDTO>>> Get()
         {
-            return await _carService.GetAllAsynk();
+            var car = await _carService.GetAllAsynk();
+
+            return Ok(car);
         }
 
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Car>> Get(long id)
+        public async Task<ActionResult<CarDTO>> GetID(long id)
         {
-            Car car = await _carService.GetByIdAsync(id);
-            if (car == null)
-                return NotFound();
-            return Ok(car);
+            var customer = await _carService.GetByIdAsync(id);
+
+            return Ok(customer);
         }
 
         // POST api/users
         [HttpPost]
-        public async Task<ActionResult<Car>> Post(Car car)
+        public async Task<ActionResult<CarDTO>> Post([FromBody] CarDTO carDTO)
         {
-            if (car == null)
-            {
-                return BadRequest();
-            }
 
-            await _carService.AddAsync(car);
-            return Ok(car);
+            await _carService.UpDateAsync(carDTO);
+
+            return Ok(carDTO);
         }
 
         // PUT api/users/
         [HttpPut]
-        public async Task<ActionResult<Car>> Put(Car car)
+        public async Task<ActionResult<CarDTO>> Put(CarDTO carDTO)
         {
-            if (car == null)
+            if (carDTO == null)
             {
                 return BadRequest();
             }
 
-            await _carService.UpDateAsync(car);
+            await _carService.UpDateAsync(carDTO);
 
-            return Ok(car);
+            return Ok(carDTO);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Car>> Delete(long id)
+        public async Task<ActionResult<CarDTO>> Delete(long id)
         {
             var car = await _carService.DeleteAsync(id);
             return Ok(car);
         }
-
     }
 }
 

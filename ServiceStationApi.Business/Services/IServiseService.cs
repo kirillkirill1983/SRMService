@@ -1,4 +1,5 @@
 ﻿using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace ServiceStationApi.Business.Services
 {
     public interface IServiseService
     {
-        Task<bool> AddAsync(Service service);
-        Task<List<Service>> GetAllAsynk();
-        Task<bool> UpDateAsync(Service service);
-        Task<Service> GetByIdAsync(long Id);
-        Task<Service> DeleteAsync(long Id);
+        Task<bool> AddAsync(ServiceDTO serviceDTO);
+        Task<List<ServiceDTO>> GetAllAsynk();
+        Task<bool> UpDateAsync(ServiceDTO serviceDTO);
+        Task<ServiceDTO> GetByIdAsync(long Id);
+        Task<ServiceDTO> DeleteAsync(long Id);
     }
 }

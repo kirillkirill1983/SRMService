@@ -20,17 +20,10 @@ namespace ServiceStationApi.Infrastructure.Repository
 
         public async Task<bool> Add(Customer customer)
         {
-            try
-            {
-                await _context.Customers.AddAsync(customer);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                return false;
-            };
+           
+            await _context.Customers.AddAsync(customer);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Customer> Delete(long Id)

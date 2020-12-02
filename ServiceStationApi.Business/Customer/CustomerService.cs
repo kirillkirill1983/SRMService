@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using ServiceStationApi.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,82 +14,50 @@ namespace ServiceStationApi.Business
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly IMapper _mapper;
 
-        public CustomerService(ICustomerRepository customerRepository)
+        public CustomerService(ICustomerRepository customerRepository,IMapper mapper)
         {
             _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(Customer customer)
+        public async Task<bool> AddAsync(CustomerDTO customerDto)
         {
-            var tabl = new Customer();
-            tabl.Name = customer.Name;
-            tabl.Phone = customer.Phone;
-            var result = await _customerRepository.Add(tabl);
-            return result ;
+            var customer=_mapper.Map<CustomerDTO,Customer>(customerDto);
+            var result = await _customerRepository.Add(customer);
+            return result;
         }
 
-        public async Task<Customer> DeleteAsync(long Id)
+        public async Task<CustomerDTO> DeleteAsync(long Id)
         {
-            try
-            {
-                var result = await _customerRepository.Delete(Id);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            Customer result = await _customerRepository.Delete(Id);
+            var customer = _mapper.Map<Customer, CustomerDTO>(result);
+
+            return customer;
         }
 
-        public async Task<List<Customer>> GetAllAsynk()
+        public async Task<List<CustomerDTO>> GetAllAsynс()
         {
-            var customerList = new List<Customer>();
             var result = await _customerRepository.GetAll();
-            foreach (var item in result)
-            {
-                customerList.Add(new Customer
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Phone = item.Phone,
-                    Cars = item.Cars
-                });
-
-            }
-            return customerList;
+            return _mapper.Map<List<Customer>, List<CustomerDTO>>(result);
+            
         }
 
-        public async Task<Customer> GetByIdAsync(long Id)
+        public async Task<CustomerDTO> GetByIdAsync(long Id)
         {
             var result = await _customerRepository.GetById(Id);
-            var table = new Customer();
-            table.Id = result.Id;
-            table.Name = result.Name;
-            table.Phone = result.Phone;
-            table.Cars = result.Cars;
-            return table;
+            var customer = _mapper.Map<Customer, CustomerDTO>(result);
+            return customer;
         }
 
-        public async Task<bool> UpDateAsync(Customer customer)
+        public async Task<bool> UpDateAsync(CustomerDTO customerDTO)
         {
-            try
-            {
-                var table = new Customer();
-                table.Id = customer.Id;
-                table.Name = customer.Name;
-                table.Phone = customer.Phone;
-                table.Cars = customer.Cars;
-                var result = await _customerRepository.Update(table);
+            var customer = _mapper.Map<CustomerDTO, Customer>(customerDTO);
+                
+            var result = await _customerRepository.Update(customer);
                 return result;
-
-            }
-            catch (Exception ex)
-            {
-                return false;
-
-            } 
-            
+     
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using ServiceStationApi.Domain;
+﻿using AutoMapper;
+using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using ServiceStationApi.Infrastructure.Repository.Works;
 using System;
 using System.Collections.Generic;
@@ -9,77 +11,48 @@ namespace ServiceStationApi.Business.Works
     public class WorkService : IWorkService
     {
         private readonly IWorkRepository _workRepository;
-        public WorkService(IWorkRepository workRepository)
+        private readonly IMapper _mapper;
+
+        public WorkService(IWorkRepository workRepository, IMapper mapper)
         {
             _workRepository = workRepository;
+            _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(Work work)
+        public async Task<bool> AddAsync(WorkDTO workDTO)
         {
-            var tabl = new Work();
-            tabl.TypeWokr = work.TypeWokr;
-            tabl.Price = tabl.Price;
-            var result = await _workRepository.Add(tabl);
+            var work = _mapper.Map<WorkDTO,Work>(workDTO);
+            var result = await _workRepository.Add(work);
             return result;
         }
 
-        public async Task<Work> DeleteAsync(long Id)
+        public async Task<WorkDTO> DeleteAsync(long Id)
         {
-            try
-            {
-                Work result = await _workRepository.Delete(Id);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            Work result = await _workRepository.Delete(Id);
+            var work = _mapper.Map<Work,WorkDTO>(result);
+            return work;
         }
 
-        public async Task<List<Work>> GetAllAsynk()
+        public async Task<List<WorkDTO>> GetAllAsynk()
         {
-            var worklList = new List<Work>();
             var result = await _workRepository.GetAll();
-            foreach (var item in result)
-            {
-                worklList.Add(new Work
-                {
-                    Id = item.Id,
-                    TypeWokr = item.TypeWokr,
-                    Price = item.Price
-
-                });
-
-            }
-            return worklList;
+            return _mapper.Map<List<Work>, List<WorkDTO>>(result);
         }
 
-        public async Task<Work> GetByIdAsync(long Id)
+        public async Task<WorkDTO> GetByIdAsync(long Id)
         {
             var result = await _workRepository.GetById(Id);
-            var table = new Work();
-            table.TypeWokr = result.TypeWokr;
-            table.Price = result.Price;
-            return table;
+            var work = _mapper.Map<Work,WorkDTO>(result);
+            return work;
+
         }
 
-        public async Task<bool> UpDateAsync(Work work)
+        public async Task<bool> UpDateAsync(WorkDTO workDTO)
         {
-            try
-            {
-                var tabl = new Work();
-                tabl.TypeWokr = work.TypeWokr;
-                tabl.Price = work.Price;
+            var work = _mapper.Map<WorkDTO,Work>(workDTO);
+            var result = await _workRepository.Update(work);
+            return result;
 
-                var result = await _workRepository.Update(tabl);
-                return result;
-
-            }
-            catch (Exception ex)
-            {
-                return false;
-
-            }
         }
     }
 }

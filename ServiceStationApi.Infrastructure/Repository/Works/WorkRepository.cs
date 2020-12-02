@@ -19,7 +19,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Works
         {
             try
             {
-                await _context.Worker.AddAsync(work);
+                await _context.Works.AddAsync(work);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -34,10 +34,10 @@ namespace ServiceStationApi.Infrastructure.Repository.Works
         {
             try
             {
-                var result = await _context.Worker.Where(e => e.Id == Id).FirstOrDefaultAsync();
+                var result = await _context.Works.Where(e => e.Id == Id).FirstOrDefaultAsync();
                 if (result != null)
                 {
-                    _context.Worker.Remove(result);
+                    _context.Works.Remove(result);
                     await _context.SaveChangesAsync();
                 }
                 return result;
@@ -51,14 +51,14 @@ namespace ServiceStationApi.Infrastructure.Repository.Works
 
         public async Task<List<Work>> GetAll()
         {
-            var result = await _context.Worker.ToListAsync();
+            var result = await _context.Works.ToListAsync();
             return result;
         }
 
         public async Task<Work> GetById(long Id)
         {
 
-            var result = await _context.Worker.Where(e => e.Id == Id).FirstOrDefaultAsync();
+            var result = await _context.Works.Where(e => e.Id == Id).FirstOrDefaultAsync();
             return result;
         }
 
@@ -66,7 +66,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Works
         {
             try
             {
-                _context.Worker.Update(work);
+                _context.Works.Update(work);
                 await _context.SaveChangesAsync();
                 return true;
             }

@@ -1,4 +1,5 @@
 ﻿using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace ServiceStationApi.Business.Details
 {
     public interface IDetailService
     {
-        Task<bool> AddAsync(Detail detail);
-        Task<List<Detail>> GetAllAsynk();
-        Task<bool> UpDateAsync(Detail detail);
-        Task<Detail> GetByIdAsync(long Id);
-        Task<Detail> DeleteAsync(long Id);
+        Task<bool> AddAsync(DetailDTO detailDTO);
+        Task<List<DetailDTO>> GetAllAsynk();
+        Task<bool> UpDateAsync(DetailDTO detailDTO);
+        Task<DetailDTO> GetByIdAsync(long Id);
+        Task<DetailDTO> DeleteAsync(long Id);
     }
 }

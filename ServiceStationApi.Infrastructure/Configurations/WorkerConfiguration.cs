@@ -8,7 +8,7 @@ namespace ServiceStationApi.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Worker> builder)
         {
-            builder.ToTable("Worker");
+            builder.ToTable("Works");
 
             builder.HasKey(o => o.Id);
 

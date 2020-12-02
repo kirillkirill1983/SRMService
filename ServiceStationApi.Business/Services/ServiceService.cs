@@ -1,4 +1,6 @@
-﻿using ServiceStationApi.Domain;
+﻿using AutoMapper;
+using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using ServiceStationApi.Infrastructure.Repository.Services;
 using System;
 using System.Collections.Generic;
@@ -9,89 +11,49 @@ namespace ServiceStationApi.Business.Services
     public class ServiceService : IServiseService
     {
         private readonly IServiceRepository _serviceRepository;
-        public ServiceService(IServiceRepository serviceRepository)
+        private readonly IMapper _mapper;
+
+        public ServiceService(IServiceRepository serviceRepository, IMapper mapper)
         {
             _serviceRepository = serviceRepository;
+            _mapper = mapper;
         }
 
-        public async  Task<bool> AddAsync(Service service)
+        public async Task<bool> AddAsync(ServiceDTO serviceDTO)
         {
-            var tabl = new Service();
-            tabl.WorkerId = service.WorkerId;
-            tabl.WorkId = service.WorkId;
-            tabl.Description = service.Description;
-            tabl.CarId = service.CarId;
-            tabl.Date = service.Date;
-            var result = await _serviceRepository.Add(tabl);
+            var service = _mapper.Map<ServiceDTO, Service>(serviceDTO);
+            var result = await _serviceRepository.Add(service);
             return result;
         }
 
-        public async Task<Service> DeleteAsync(long Id)
+        public async Task<ServiceDTO> DeleteAsync(long Id)
         {
-            try
-            {
-                Service result = await _serviceRepository.Delete(Id);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            Service result = await _serviceRepository.Delete(Id);
+            var service = _mapper.Map<Service, ServiceDTO>(result);
+            return service;
         }
 
-        public async Task<List<Service>> GetAllAsynk()
+        public async Task<List<ServiceDTO>> GetAllAsynk()
         {
-            var servicelList = new List<Service>();
             var result = await _serviceRepository.GetAll();
-            foreach (var item in result)
-            {
-                servicelList.Add(new Service
-                {
-                    Id = item.Id,
-                    WorkerId = item.WorkerId,
-                    WorkId = item.WorkId,
-                    Description=item.Description,
-                    CarId=item.CarId,
-                    Date=item.Date
-
-                });
-
-            }
-            return servicelList;
+            return _mapper.Map<List<Service>, List<ServiceDTO>>(result);
         }
 
-        public async Task<Service> GetByIdAsync(long Id)
+        public async Task<ServiceDTO> GetByIdAsync(long Id)
         {
             var result = await _serviceRepository.GetById(Id);
-            var table = new Service();
-            table.WorkerId = result.WorkerId;
-            table.WorkId = result.WorkId;
-            table.Description = result.Description;
-            table.CarId = result.CarId;
-            table.Date = result.Date;
-            return table;
+            var service = _mapper.Map<Service, ServiceDTO>(result);
+            return service;
+
         }
 
-        public async Task<bool> UpDateAsync(Service service)
+        public async Task<bool> UpDateAsync(ServiceDTO serviceDTO)
         {
-            try
-            {
-                var table = new Service();
-                table.WorkerId = service.WorkerId;
-                table.WorkId = service.WorkId;
-                table.Description = service.Description;
-                table.CarId = service.CarId;
-                table.Date = service.Date;
+            var service = _mapper.Map<ServiceDTO, Service>(serviceDTO);
+            var result = await _serviceRepository.Update(service);
+            return result;
 
-                var result = await _serviceRepository.Update(table);
-                return result;
 
-            }
-            catch (Exception ex)
-            {
-                return false;
-
-            }
         }
     }
 }

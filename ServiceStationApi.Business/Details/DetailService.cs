@@ -1,4 +1,6 @@
-﻿using ServiceStationApi.Domain;
+﻿using AutoMapper;
+using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using ServiceStationApi.Infrastructure.Repository.Details;
 using System;
 using System.Collections.Generic;
@@ -10,82 +12,50 @@ namespace ServiceStationApi.Business.Details
     public class DetailService : IDetailService
     {
         private readonly IDetailRepository _detailRepository;
-        public DetailService(IDetailRepository detailRepository)
+        private readonly IMapper _mapper;
+
+        public DetailService(IDetailRepository detailRepository, IMapper mapper)
         {
             _detailRepository = detailRepository;
-
+            _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(Detail detail)
+        public async Task<bool> AddAsync(DetailDTO detailDTO )
         {
-            var tabl = new Detail();
-            tabl.WorkId = detail.WorkId;
-            tabl.Name = detail.Name;
-            tabl.Price = tabl.Price;
-            var result = await _detailRepository.Add(tabl);
+            var detail = _mapper.Map<DetailDTO, Detail>(detailDTO);
+            var result = await _detailRepository.Add(detail);
             return result;
         }
 
-        public async Task<Detail> DeleteAsync(long Id)
+        public async Task<DetailDTO> DeleteAsync(long Id)
         {
-            try
-            {
-                Detail result = await _detailRepository.Delete(Id);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            Detail result = await _detailRepository.Delete(Id);
+            var detail = _mapper.Map<Detail, DetailDTO>(result);
+
+            return detail;
         }
 
-        public async Task<List<Detail>> GetAllAsynk()
+        public async Task<List<DetailDTO>> GetAllAsynk()
         {
-            var detailList = new List<Detail>();
             var result = await _detailRepository.GetAll();
-            foreach (var item in result)
-            {
-                detailList.Add(new Detail
-                {
-                    Id = item.Id,
-                    WorkId=item.WorkId,
-                    Name=item.Name,
-                    Price=item.Price
-
-                });
-
-            }
-            return detailList;
+            return _mapper.Map<List<Detail>, List<DetailDTO>>(result);
         }
 
-        public async Task<Detail> GetByIdAsync(long Id)
+        public async Task<DetailDTO> GetByIdAsync(long Id)
         {
             var result = await _detailRepository.GetById(Id);
-            var table = new Detail();
-            table.WorkId = result.WorkId;
-            table.Name = result.Name;
-            table.Price = result.Price;
-            return table;
+            var detail = _mapper.Map<Detail, DetailDTO>(result);
+            return detail;
         }
 
-        public async Task<bool> UpDateAsync(Detail detail)
+        public async Task<bool> UpDateAsync(DetailDTO detailDTO)
         {
-            try
-            {
-                var tabl = new Detail();
-                tabl.WorkId = detail.WorkId;
-                tabl.Name = detail.Name;
-                tabl.Price = detail.Price;
+            var detail = _mapper.Map<DetailDTO, Detail>(detailDTO);
 
-                var result = await _detailRepository.Update(tabl);
-                return result;
+            var result = await _detailRepository.Update(detail);
+            return result;
 
-            }
-            catch (Exception ex)
-            {
-                return false;
 
-            }
         }
     }
 }

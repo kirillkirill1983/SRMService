@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServiceStationApi.Business.Works;
 using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 
 namespace ServiceStationApi.Controllers
 {
@@ -11,58 +12,56 @@ namespace ServiceStationApi.Controllers
     public class WorkController : ControllerBase
     {
         private readonly IWorkService _workService;
+
         public WorkController(IWorkService workService)
         {
             _workService = workService;
+
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Work>>> Get()
+        public async Task<ActionResult<IEnumerable<WorkDTO>>> Get()
         {
-            return await _workService.GetAllAsynk();
+            var detail = await _workService.GetAllAsynk();
+
+            return Ok(detail);
         }
 
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Work>> Get(long id)
+        public async Task<ActionResult<WorkDTO>> GetID(long id)
         {
-            Work work = await _workService.GetByIdAsync(id);
-            if (work == null)
-                return NotFound();
-            return new ObjectResult(work);
+            var detail = await _workService.GetByIdAsync(id);
+
+            return Ok(detail);
         }
 
         // POST api/users
         [HttpPost]
-        public async Task<ActionResult<Work>> Post(Work work)
+        public async Task<ActionResult<WorkDTO>> Post([FromBody] WorkDTO workDTO)
         {
-            if (work == null)
-            {
-                return BadRequest();
-            }
-
-            await _workService.AddAsync(work);
-            return Ok(work);
+            await _workService.UpDateAsync(workDTO);
+            return Ok(workDTO);
         }
 
         // PUT api/users/
         [HttpPut]
-        public async Task<ActionResult<Work>> Put(Work work)
+        public async Task<ActionResult<WorkDTO>> Put(WorkDTO workDTO)
         {
-            if (work == null)
+            if (workDTO == null)
             {
                 return BadRequest();
             }
 
-            await _workService.UpDateAsync(work);
+            await _workService.UpDateAsync(workDTO);
 
-            return Ok(work);
+            return Ok(workDTO);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Work>> Delete(long id)
+        public async Task<ActionResult<WorkDTO>> Delete(long id)
         {
             var work = await _workService.DeleteAsync(id);
             return Ok(work);

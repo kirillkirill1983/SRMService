@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServiceStationApi.Business.Services;
 using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 
 namespace ServiceStationApi.Controllers
 {
@@ -11,61 +12,62 @@ namespace ServiceStationApi.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly IServiseService _serviseService;
+
         public ServiceController(IServiseService serviseService)
         {
             _serviseService = serviseService;
+
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> Get()
+        public async Task<ActionResult<IEnumerable<ServiceDTO>>> Get()
         {
-            return await _serviseService.GetAllAsynk();
+            var detail = await _serviseService.GetAllAsynk();
+
+            return Ok(detail);
         }
 
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Service>> Get(long id)
+        public async Task<ActionResult<ServiceDTO>> GetID(long id)
         {
-            Service service = await _serviseService.GetByIdAsync(id);
-            if (service == null)
-                return NotFound();
-            return new ObjectResult(service);
+            var detail = await _serviseService.GetByIdAsync(id);
+
+            return Ok(detail);
         }
 
         // POST api/users
         [HttpPost]
-        public async Task<ActionResult<Service>> Post(Service service)
+        public async Task<ActionResult<ServiceDTO>> Post([FromBody] ServiceDTO serviceDTO)
         {
-            if (service == null)
-            {
-                return BadRequest();
-            }
 
-            await _serviseService.AddAsync(service);
-            return Ok(service);
+            await _serviseService.UpDateAsync(serviceDTO);
+
+            return Ok(serviceDTO);
         }
 
         // PUT api/users/
         [HttpPut]
-        public async Task<ActionResult<Service>> Put(Service service)
+        public async Task<ActionResult<ServiceDTO>> Put(ServiceDTO serviceDTO)
         {
-            if (service == null)
+            if (serviceDTO == null)
             {
                 return BadRequest();
             }
 
-            await _serviseService.UpDateAsync(service);
+            await _serviseService.UpDateAsync(serviceDTO);
 
-            return Ok(service);
+            return Ok(serviceDTO);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Service>> Delete(long id)
+        public async Task<ActionResult<ServiceDTO>> Delete(long id)
         {
-            var service = await _serviseService.DeleteAsync(id);
-            return Ok(service);
+            var detail = await _serviseService.DeleteAsync(id);
+            return Ok(detail);
         }
     }
 }
+

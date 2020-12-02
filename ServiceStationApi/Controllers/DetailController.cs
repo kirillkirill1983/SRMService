@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServiceStationApi.Business.Details;
 using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 
 namespace ServiceStationApi.Controllers
 {
@@ -11,62 +12,61 @@ namespace ServiceStationApi.Controllers
     public class DetailController : ControllerBase
     {
         private readonly IDetailService _detailService;
-        public DetailController(IDetailService detailService)
+
+        public DetailController(IDetailService carService)
         {
-            _detailService = detailService;
+            _detailService = carService;
+
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Detail>>> Get()
+        public async Task<ActionResult<IEnumerable<DetailDTO>>> Get()
         {
-            return await _detailService.GetAllAsynk();
+            var detail = await _detailService.GetAllAsynk();
+
+            return Ok(detail);
         }
 
         // GET api/users/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Detail>> Get(long id)
+        public async Task<ActionResult<DetailDTO>> GetID(long id)
         {
-            Detail detail = await _detailService.GetByIdAsync(id);
-            if (detail == null)
-                return NotFound();
-            return new ObjectResult(detail);
+            var detail = await _detailService.GetByIdAsync(id);
+
+            return Ok(detail);
         }
 
         // POST api/users
         [HttpPost]
-        public async Task<ActionResult<Detail>> Post(Detail detail)
+        public async Task<ActionResult<DetailDTO>> Post([FromBody] DetailDTO detailDTO)
         {
-            if (detail == null)
-            {
-                return BadRequest();
-            }
 
-            await _detailService.AddAsync(detail);
-            return Ok(detail);
+            await _detailService.UpDateAsync(detailDTO);
+
+            return Ok(detailDTO);
         }
 
         // PUT api/users/
         [HttpPut]
-        public async Task<ActionResult<Detail>> Put(Detail detail)
+        public async Task<ActionResult<DetailDTO>> Put(DetailDTO detailDTO)
         {
-            if (detail == null)
+            if (detailDTO == null)
             {
                 return BadRequest();
             }
 
-            await _detailService.UpDateAsync(detail);
+            await _detailService.UpDateAsync(detailDTO);
 
-            return Ok(detail);
+            return Ok(detailDTO);
         }
 
 
         // DELETE api/users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Detail>> Delete(long id)
+        public async Task<ActionResult<DetailDTO>> Delete(long id)
         {
             var detail = await _detailService.DeleteAsync(id);
             return Ok(detail);
         }
-
     }
 }

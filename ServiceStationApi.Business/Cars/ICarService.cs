@@ -1,4 +1,5 @@
 ﻿using ServiceStationApi.Domain;
+using ServiceStationApi.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,10 @@ namespace ServiceStationApi.Business.Cars
 {
     public interface ICarService
     {
-        Task<bool> AddAsync(Car car);
-        Task<List<Car>> GetAllAsynk();
-        Task<bool> UpDateAsync(Car car);
-        Task<Car> GetByIdAsync(long Id);
-        Task<Car> DeleteAsync(long Id);
+        Task<bool> AddAsync(CarDTO carDTO);
+        Task<List<CarDTO>> GetAllAsynk();
+        Task<bool> UpDateAsync(CarDTO carDTO);
+        Task<CarDTO> GetByIdAsync(long Id);
+        Task<CarDTO> DeleteAsync(long Id);
     }
 }
