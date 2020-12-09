@@ -52,7 +52,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Cars
 
         public async Task<List<Car>> GetAll()
         {
-            var result = await _context.Cars.ToListAsync();
+            var result = await _context.Cars.Include(p=>p.Customer).ToListAsync();
             return result;
         }
 
