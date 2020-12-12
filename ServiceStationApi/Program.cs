@@ -56,6 +56,5 @@ namespace ServiceStationApi
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-        
     }
 }

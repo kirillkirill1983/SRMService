@@ -62,7 +62,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Services
             var result = await _context.Services.Where(e => e.Id == Id).FirstOrDefaultAsync();
             return result;
         }
-
+        
         public async Task<bool> Update(Service service)
         {
             try

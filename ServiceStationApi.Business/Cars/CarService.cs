@@ -53,8 +53,6 @@ namespace ServiceStationApi.Business.Cars
 
             var result = await _carRepository.Update(car);
             return result;
-
-
         }
     }
 }

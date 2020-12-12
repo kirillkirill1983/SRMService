@@ -68,8 +68,6 @@ namespace ServiceStationApi
             services.AddTransient<IWorkerRepository, WorkerRepository>();
             services.AddTransient<IWorkerService, WorkerService>();
             services.AddDbContext<ApplicationContext>();
-
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,8 +77,6 @@ namespace ServiceStationApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-
             
             try
             {
@@ -108,8 +104,6 @@ namespace ServiceStationApi
             {
                 endpoints.MapControllers();
             });
-
-            
         }
 
     }

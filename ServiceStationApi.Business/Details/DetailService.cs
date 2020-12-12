@@ -54,8 +54,6 @@ namespace ServiceStationApi.Business.Details
 
             var result = await _detailRepository.Update(detail);
             return result;
-
-
         }
     }
 }

@@ -3,7 +3,6 @@ using ServiceStationApi.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Threading.Tasks;
 
 namespace ServiceStationApi.Infrastructure.Repository.Cars
@@ -26,7 +25,6 @@ namespace ServiceStationApi.Infrastructure.Repository.Cars
             }
             catch (Exception ex)
             {
-
                 return false;
             };
         }
@@ -45,7 +43,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Cars
             }
             catch (Exception ex)
             {
-
+                
                 return null;
             }
         }

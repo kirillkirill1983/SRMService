@@ -52,8 +52,6 @@ namespace ServiceStationApi.Business.Services
             var service = _mapper.Map<ServiceDTO, Service>(serviceDTO);
             var result = await _serviceRepository.Update(service);
             return result;
-
-
         }
     }
 }
