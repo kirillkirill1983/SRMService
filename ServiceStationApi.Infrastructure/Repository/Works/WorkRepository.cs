@@ -51,7 +51,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Works
 
         public async Task<List<Work>> GetAll()
         {
-            var result = await _context.Works.ToListAsync();
+            var result = await _context.Works.Include(p=>p.Details).ToListAsync();
             return result;
         }
 
