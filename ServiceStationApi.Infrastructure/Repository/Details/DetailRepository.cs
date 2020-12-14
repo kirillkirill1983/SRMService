@@ -52,7 +52,7 @@ namespace ServiceStationApi.Infrastructure.Repository.Details
 
         public async Task<List<Detail>> GetAll()
         {
-            var result = await _context.Details.ToListAsync();
+            var result = await _context.Details.Include(p=>p.Work).ToListAsync();
             return result;
         }
 

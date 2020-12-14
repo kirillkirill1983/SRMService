@@ -47,7 +47,7 @@ namespace ServiceStationApi.Infrastructure.Repository
 
         public async Task<List<Customer>> GetAll()
         {
-            //var result = await _context.Customers.Include.ToListAsync();
+           
             var result = await _context.Customers.Include(p => p.Cars).ToListAsync();
             return result;
         }
